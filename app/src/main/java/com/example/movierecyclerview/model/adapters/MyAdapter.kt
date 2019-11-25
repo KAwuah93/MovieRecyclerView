@@ -8,14 +8,14 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.movierecyclerview.R
-import com.example.movierecyclerview.model.datasource.remote.retrofit.CONSTANTS.Companion.BASE_URL
 import com.example.movierecyclerview.model.datasource.remote.retrofit.CONSTANTS.Companion.IMG_BASEURL
 import com.example.movierecyclerview.model.moviedataclasses.ResultsItem
 import com.example.movierecyclerview.view.activities.DetailView
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.list_item_1.view.*
 
-class MyAdapter(private val myDataset: ArrayList<ResultsItem>) : RecyclerView.Adapter<MyAdapter.MyViewHolder>(){
+class MyAdapter(private val myDataset: ArrayList<ResultsItem>) :
+    RecyclerView.Adapter<MyAdapter.MyViewHolder>(){
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyAdapter.MyViewHolder {

@@ -3,8 +3,10 @@ package com.example.movierecyclerview.view.activities
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.movierecyclerview.R
@@ -13,6 +15,7 @@ import com.example.movierecyclerview.model.adapters.MyAdapter
 import com.example.movierecyclerview.model.datasource.remote.retrofit.CONSTANTS.Companion.API_KEY
 import com.example.movierecyclerview.model.datasource.remote.retrofit.MovieService
 import com.example.movierecyclerview.model.moviedataclasses.PopResults
+import com.example.movierecyclerview.view.custom.CustomOnScrollListener
 import com.example.movierecyclerview.viewmodel.MainActivityViewModel
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -27,7 +30,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: MyAdapter
-    private lateinit var viewManager: RecyclerView.LayoutManager
+    private lateinit var viewManager: LinearLayoutManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,9 +42,19 @@ class MainActivity : AppCompatActivity() {
         recyclerView = findViewById(R.id.RVlist)
 
         recyclerView.layoutManager = viewManager
+        recyclerView.addOnScrollListener(object :CustomOnScrollListener(viewManager){
+            override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView) {
+                Toast.makeText(applicationContext,"Would load more", Toast.LENGTH_LONG).show()
+
+                viewModel.MovieCall(page)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe { addData(it) }
+            }
+        })
 
         //viewModel.standardCall(recyclerView)
-        viewModel.standardCall()
+        viewModel.MovieCall(1)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { populateData(it) }
