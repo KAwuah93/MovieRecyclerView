@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.movierecyclerview.R
@@ -21,17 +22,17 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var viewModel: MainActivityViewModel
-    lateinit var binding: ActivityMainBinding
+    private lateinit var viewModel: MainActivityViewModel
+    private lateinit var binding: ActivityMainBinding
 
-    lateinit var recyclerView: RecyclerView
-    lateinit var adapter: MyAdapter
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: MyAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel = MainActivityViewModel()
+        viewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         viewManager = LinearLayoutManager(this)
@@ -39,6 +40,22 @@ class MainActivity : AppCompatActivity() {
 
         recyclerView.layoutManager = viewManager
 
-        viewModel.standardCall(recyclerView)
+        //viewModel.standardCall(recyclerView)
+        viewModel.standardCall()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { populateData(it) }
+    }
+    private fun populateData(dataSet: PopResults?) {
+        dataSet?.let {
+            adapter = MyAdapter(it.results!!)
+            recyclerView.adapter = adapter
+        }
+    }
+
+    private fun addData(dataSet: PopResults?) {
+        dataSet?.let {
+            adapter.addList(dataSet.results!!)
+        }
     }
 }

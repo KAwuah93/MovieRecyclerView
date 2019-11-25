@@ -18,7 +18,6 @@ import kotlinx.android.synthetic.main.list_item_1.view.*
 class MyAdapter(private val myDataset: ArrayList<ResultsItem>) : RecyclerView.Adapter<MyAdapter.MyViewHolder>(){
 
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyAdapter.MyViewHolder {
 
         val view = LayoutInflater.from(parent.context)
@@ -27,13 +26,17 @@ class MyAdapter(private val myDataset: ArrayList<ResultsItem>) : RecyclerView.Ad
         return MyViewHolder(view)
     }
 
-
     override fun onBindViewHolder(holder: MyAdapter.MyViewHolder, position: Int) {
         val item = myDataset[position]
         holder.bind(item)
     }
 
     override fun getItemCount() = myDataset.size
+
+    fun addList(additionalData : ArrayList<ResultsItem>) {
+        myDataset.addAll(additionalData)
+        notifyDataSetChanged()
+    }
 
     //View Holder editing
     class MyViewHolder(v: View) : RecyclerView.ViewHolder(v), View.OnClickListener {
@@ -43,22 +46,19 @@ class MyAdapter(private val myDataset: ArrayList<ResultsItem>) : RecyclerView.Ad
         private var item : ResultsItem? = null
 
         init { v.setOnClickListener(this) }
+
         override fun onClick(p0: View?) {
             //On Click function
             val bundle = Bundle()
             bundle.putParcelable("movie", item)
-
             val intent = Intent(p0?.context,DetailView::class.java)
             intent.putExtras(bundle)
-
             startActivity(p0!!.context,intent,null)
         }
 
         //binding function
         fun bind(item : ResultsItem){
-
             this.item = item
-
             //binding the view information to the layout
             view.tvListTitle.text = item.title
             view.tvListReleaseDate.text = "Released: "+item.releaseDate

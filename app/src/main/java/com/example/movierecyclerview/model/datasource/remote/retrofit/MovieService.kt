@@ -12,7 +12,7 @@ interface MovieService {
             RetrofitHelper().getRetrofitInstance().create(MovieService::class.java)
     }
 
-    @GET("3/discover/movie/")
+    @GET("3/discover/movie")
     fun getMovies(@Query("sort_by") sortPerm: String,
                   @Query("api_key") api_key : String,
                   @Query("page") pageNum : String)

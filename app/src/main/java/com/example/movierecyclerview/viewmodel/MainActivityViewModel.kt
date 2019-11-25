@@ -7,6 +7,7 @@ import com.example.movierecyclerview.model.adapters.MyAdapter
 import com.example.movierecyclerview.model.datasource.remote.retrofit.CONSTANTS
 import com.example.movierecyclerview.model.datasource.remote.retrofit.MovieService
 import com.example.movierecyclerview.model.moviedataclasses.PopResults
+import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -17,25 +18,7 @@ class MainActivityViewModel : ViewModel() {
     //Tags
     val TAG = "NETCALL"
 
-    fun standardCall(recyclerView: RecyclerView){
-        Log.d(TAG, " 1 Stepping into the method.. ")
-        MovieService.createService()
-            .getMovies("popularity.desc", CONSTANTS.API_KEY,"1")
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeOn(Schedulers.io())
-            .subscribe(
-                object : Observer<PopResults> {
-                    lateinit var popResults: PopResults
-                    override fun onComplete() {
-                        //TODO do the call and log the results
-                        recyclerView.adapter = MyAdapter(popResults.results!!)
-                    }
-                    override fun onSubscribe(d: Disposable) {}
-                    override fun onNext(t: PopResults) {
-                        this.popResults = t
-                    }
-                    override fun onError(e: Throwable) {}
-                }
-            )
+    fun standardCall(): Observable<PopResults> {
+        return MovieService.createService().getMovies("popularity.desc", CONSTANTS.API_KEY,"1")
     }
 }
