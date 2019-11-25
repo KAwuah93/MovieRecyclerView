@@ -20,7 +20,7 @@ class MyAdapter(private val myDataset: ArrayList<ResultsItem>) : RecyclerView.Ad
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyAdapter.MyViewHolder {
-        //inflate the view
+
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.list_item_1, parent, false)
 
@@ -29,13 +29,11 @@ class MyAdapter(private val myDataset: ArrayList<ResultsItem>) : RecyclerView.Ad
 
 
     override fun onBindViewHolder(holder: MyAdapter.MyViewHolder, position: Int) {
-        val item = myDataset!![position]
-        //use the bind function we created before to hook everything up
+        val item = myDataset[position]
         holder.bind(item)
     }
 
     override fun getItemCount() = myDataset.size
-
 
     //View Holder editing
     class MyViewHolder(v: View) : RecyclerView.ViewHolder(v), View.OnClickListener {

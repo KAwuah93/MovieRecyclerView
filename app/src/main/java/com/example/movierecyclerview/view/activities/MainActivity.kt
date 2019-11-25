@@ -22,10 +22,8 @@ import java.util.*
 class MainActivity : AppCompatActivity() {
 
     lateinit var viewModel: MainActivityViewModel
-    //the binding?
     lateinit var binding: ActivityMainBinding
 
-    //RecyclerView Testing
     lateinit var recyclerView: RecyclerView
     lateinit var adapter: MyAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
@@ -36,10 +34,9 @@ class MainActivity : AppCompatActivity() {
         viewModel = MainActivityViewModel()
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        //RecyclerView Stuff
         viewManager = LinearLayoutManager(this)
         recyclerView = findViewById(R.id.RVlist)
-        //set the viewManager now time to send it to the shadow
+
         recyclerView.layoutManager = viewManager
 
         viewModel.standardCall(recyclerView)

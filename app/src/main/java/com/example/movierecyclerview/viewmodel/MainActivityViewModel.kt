@@ -28,12 +28,10 @@ class MainActivityViewModel : ViewModel() {
                     lateinit var popResults: PopResults
                     override fun onComplete() {
                         //TODO do the call and log the results
-                        //Log.d(TAG, "Object = " + popResults.results!![0])
                         recyclerView.adapter = MyAdapter(popResults.results!!)
                     }
                     override fun onSubscribe(d: Disposable) {}
                     override fun onNext(t: PopResults) {
-                        //Log.d(TAG, " 3 Stepping into the method.. ")
                         this.popResults = t
                     }
                     override fun onError(e: Throwable) {}
