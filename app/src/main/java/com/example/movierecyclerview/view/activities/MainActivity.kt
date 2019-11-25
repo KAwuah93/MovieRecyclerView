@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = viewManager
         recyclerView.addOnScrollListener(object :CustomOnScrollListener(viewManager){
             override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView) {
-                Toast.makeText(applicationContext,"Would load more", Toast.LENGTH_LONG).show()
+                Toast.makeText(applicationContext,"Would load more page " + page, Toast.LENGTH_LONG).show()
 
                 viewModel.MovieCall(page)
                     .subscribeOn(Schedulers.io())
